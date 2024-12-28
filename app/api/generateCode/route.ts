@@ -3,10 +3,19 @@ import dedent from "dedent";
 import { z } from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+/**
+ * API key for Google Generative AI.
+ * @type {string}
+ */
 const apiKey = process.env.GOOGLE_AI_API_KEY || "";
 const genAI = new GoogleGenerativeAI(apiKey);
 
-export async function POST(req: Request) {
+/**
+ * Handles the POST request to generate code.
+ * @param {Request} req - The incoming request object.
+ * @returns {Promise<Response>} - The response object containing the generated code.
+ */
+export async function POST(req: Request): Promise<Response> {
   let json = await req.json();
   let result = z
     .object({
@@ -49,7 +58,12 @@ export async function POST(req: Request) {
   return new Response(readableStream);
 }
 
-function getSystemPrompt(shadcn: boolean) {
+/**
+ * Generates the system prompt based on the provided options.
+ * @param {boolean} shadcn - Whether to include shadcn components in the prompt.
+ * @returns {string} - The generated system prompt.
+ */
+function getSystemPrompt(shadcn: boolean): string {
   let systemPrompt = 
 `You are an expert frontend React engineer who is also a great UI/UX designer. Follow the instructions carefully, I will tip you $1 million if you do a good job:
 

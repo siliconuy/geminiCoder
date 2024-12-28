@@ -11,11 +11,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FormEvent, useEffect, useState } from "react";
 import LoadingDots from "../../components/loading-dots";
 
+/**
+ * Removes code formatting from a given string.
+ * @param {string} code - The code string to remove formatting from.
+ * @returns {string} - The code string without formatting.
+ */
 function removeCodeFormatting(code: string): string {
   return code.replace(/```(?:typescript|javascript|tsx)?\n([\s\S]*?)```/g, '$1').trim();
 }
 
-export default function Home() {
+/**
+ * The main component for the Home page.
+ * @returns {JSX.Element} - The JSX element for the Home page.
+ */
+export default function Home(): JSX.Element {
   let [status, setStatus] = useState<
     "initial" | "creating" | "created" | "updating" | "updated"
   >("initial");
@@ -49,6 +58,10 @@ export default function Home() {
 
   let loading = status === "creating" || status === "updating";
 
+  /**
+   * Handles the form submission to create an app.
+   * @param {FormEvent<HTMLFormElement>} e - The form event.
+   */
   async function createApp(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -260,7 +273,14 @@ export default function Home() {
   );
 }
 
-async function minDelay<T>(promise: Promise<T>, ms: number) {
+/**
+ * Ensures a minimum delay for a given promise.
+ * @template T
+ * @param {Promise<T>} promise - The promise to delay.
+ * @param {number} ms - The minimum delay in milliseconds.
+ * @returns {Promise<T>} - The delayed promise.
+ */
+async function minDelay<T>(promise: Promise<T>, ms: number): Promise<T> {
   let delay = new Promise((resolve) => setTimeout(resolve, ms));
   let [p] = await Promise.all([promise, delay]);
 
